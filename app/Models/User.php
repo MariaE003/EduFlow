@@ -37,6 +37,21 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(){
         return [];
     }
+    public function courses(){ 
+        return $this->hasMany(Course::class, 'teacher_id'); 
+    }
+    public function enrollments(){ 
+        return $this->hasMany(Enrollment::class, 'student_id'); 
+    }
+    public function wishlists(){ 
+        return $this->hasMany(Wishlist::class, 'student_id'); 
+    }
+    public function groupMembers(){ 
+        return $this->hasMany(GroupMember::class, 'student_id'); 
+    }
+    public function courseInterests(){ 
+        return $this->hasMany(CourseInterest::class, 'student_id'); 
+    }
 
     /**
      * The attributes that should be hidden for serialization.
