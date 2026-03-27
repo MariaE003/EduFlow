@@ -10,7 +10,7 @@ class Course extends Model
     //
     use HasFactory;
 
-    protected $fillable = ['teacher_id','title','description','price'];
+    protected $fillable = ['teacher_id','title','description','price','interest_id'];
 
     public function teacher(){ 
         return $this->belongsTo(User::class, 'teacher_id'); 
@@ -23,5 +23,8 @@ class Course extends Model
     }
     public function groups(){ 
         return $this->hasMany(Group::class); 
+    }
+    public function interest(){
+        return $this->belongTo(Interest::class);
     }
 }

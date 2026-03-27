@@ -18,15 +18,23 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'role'=>'required',
+            'role' => 'required|in:student,teacher',
             'password' => 'required',
+            'interests' => 'required_if:role,student|array', 
+            'interests.*' => 'exists:interests,id', 
         ]);
+
         $user=User::create([
             'name'=>$request->name,
             'email'=>$request->email,
             'role' => $request->role,
             'password'=>Hash::make($request->password),
         ]);
+
+        if ($user->role === 'student' && $request->has('interests')) {
+            $user->interests()->sync($request->interests);
+        }
+
         try{
             $token=JWTAuth::fromUser($user);//creer un token directement a partir dun user (le token contient user_id)
         }catch(JWTException $e){
@@ -53,7 +61,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token'=>$token,
-            'expires_id'=>auth('api')->factory()->getTTL()*60,
+            'expires_in'=>auth('api')->factory()->getTTL()*60,
         ]);
     }
     public function logout(){

@@ -37,6 +37,7 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(){
         return [];
     }
+
     public function courses(){ 
         return $this->hasMany(Course::class, 'teacher_id'); 
     }
@@ -52,6 +53,10 @@ class User extends Authenticatable implements JWTSubject
     public function courseInterests(){ 
         return $this->hasMany(CourseInterest::class, 'student_id'); 
     }
+    public function interests(){
+        return $this->belongsToMany(Interest::class);
+    }
+    
 
     /**
      * The attributes that should be hidden for serialization.
