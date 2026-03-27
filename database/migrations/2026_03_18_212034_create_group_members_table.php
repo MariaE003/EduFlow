@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('enrollments', function (Blueprint $table) {
+        Schema::create('group_members', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
-            $table->enum('payment_status',['pending','paid','failed'])->default('pending');
             $table->timestamps();
+            $table->unique(['group_id', 'student_id']);
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('enrollments');
+        Schema::dropIfExists('group_members');
     }
 };
