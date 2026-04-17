@@ -25,6 +25,6 @@ class Course extends Model
         return $this->hasMany(Group::class); 
     }
     public function interest(){
-        return $this->belongTo(Interest::class);
+        return $this->belongsTo(Interest::class);
     }
 }

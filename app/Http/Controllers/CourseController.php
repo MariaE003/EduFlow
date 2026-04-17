@@ -20,7 +20,15 @@ class CourseController extends Controller{
 
     public function store(Request $request){
         // dd($request->all());
-        return $this->courseService->createCourse($request->all());
+        // return $this->courseService->createCourse($request->all());
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric'
+        ]);
+        $data = $request->all();
+        $data['teacher_id'] = auth()->id();
+        return $this->courseService->createCourse($data);
     }
 
     public function update($id,Request $request){

@@ -1,0 +1,1055 @@
+{
+  "info": {
+    "_postman_id": "e1217c3d-271b-42a6-88b8-af0bbc0410cd",
+    "name": "EduFlow",
+    "description": "**EduFlow** est une plateforme de gestion pédagogique permettant :\n\n- aux étudiants de s’inscrire à des cours\n    \n- aux enseignants de gérer leurs cours\n    \n- de payer via Stripe\n    \n- d’organiser les étudiants en groupes automatiquement",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31780322"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"fahd\",\r\n  \"email\": \"fahd@gmagil.com\",\r\n  \"password\": \"123456\",\r\n  \"password_confirmation\": \"123456\",\r\n  \"role\": \"teacher\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/register",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "register"
+              ]
+            },
+            "description": "Permet à un utilisateur (étudiant ou enseignant) de créer un compte.  \nLors de l’inscription, l’étudiant peut sélectionner ses centres d’intérêt."
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "maria",
+                  "type": "text",
+                  "uuid": "1991124a-a261-4e57-a3f0-d06c17cd8118",
+                  "disabled": true
+                },
+                {
+                  "key": "role",
+                  "value": "lecteur",
+                  "type": "text",
+                  "uuid": "3ccbbc9f-e245-4c96-8125-bc8a4adf20ca",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "mariaelgotby1@gmail.com",
+                  "type": "text",
+                  "uuid": "dceb0ca9-ade4-44ab-978b-ed6cb6accd3e"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text",
+                  "uuid": "80a8b526-772f-4fe3-bc4c-267b3986d930"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "description": "Permet à un utilisateur de se connecter et de recevoir un token JWT pour accéder aux routes sécurisées."
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "maria",
+                  "type": "text",
+                  "uuid": "1991124a-a261-4e57-a3f0-d06c17cd8118",
+                  "disabled": true
+                },
+                {
+                  "key": "role",
+                  "value": "lecteur",
+                  "type": "text",
+                  "uuid": "3ccbbc9f-e245-4c96-8125-bc8a4adf20ca",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "maria@gmail.com",
+                  "type": "text",
+                  "uuid": "dceb0ca9-ade4-44ab-978b-ed6cb6accd3e"
+                },
+                {
+                  "key": "password",
+                  "value": "rouma",
+                  "type": "text",
+                  "uuid": "80a8b526-772f-4fe3-bc4c-267b3986d930"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/logout",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "logout"
+              ]
+            },
+            "description": "Permet à l’utilisateur connecté de se déconnecter en invalidant son token JWT."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "create course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"teacher_id\": 2,\r\n    \"title\": \"la boite\",\r\n    \"description\": \"un romon autobio\",\r\n    \"price\": 20,\r\n    \"interest_id\":1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses"
+              ]
+            },
+            "description": "Permet à un enseignant de créer un nouveau cours avec titre, description et prix."
+          },
+          "response": []
+        },
+        {
+          "name": "show courses",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "teacher_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "1991124a-a261-4e57-a3f0-d06c17cd8118"
+                },
+                {
+                  "key": "title",
+                  "value": "lecteur",
+                  "type": "text",
+                  "uuid": "3ccbbc9f-e245-4c96-8125-bc8a4adf20ca"
+                },
+                {
+                  "key": "description",
+                  "value": "this course is important",
+                  "type": "text",
+                  "uuid": "dceb0ca9-ade4-44ab-978b-ed6cb6accd3e"
+                },
+                {
+                  "key": "price",
+                  "value": "123",
+                  "type": "text",
+                  "uuid": "80a8b526-772f-4fe3-bc4c-267b3986d930"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses"
+              ]
+            },
+            "description": "Récupérer la liste de tous les cours disponibles."
+          },
+          "response": []
+        },
+        {
+          "name": "delete course",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "teacher_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "1991124a-a261-4e57-a3f0-d06c17cd8118"
+                },
+                {
+                  "key": "title",
+                  "value": "lecteur",
+                  "type": "text",
+                  "uuid": "3ccbbc9f-e245-4c96-8125-bc8a4adf20ca"
+                },
+                {
+                  "key": "description",
+                  "value": "this course is important",
+                  "type": "text",
+                  "uuid": "dceb0ca9-ade4-44ab-978b-ed6cb6accd3e"
+                },
+                {
+                  "key": "price",
+                  "value": "123",
+                  "type": "text",
+                  "uuid": "80a8b526-772f-4fe3-bc4c-267b3986d930"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses/1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses",
+                "1"
+              ]
+            },
+            "description": "Supprimer un cours (réservé à l’enseignant)."
+          },
+          "response": []
+        },
+        {
+          "name": "update course",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "teacher_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "1991124a-a261-4e57-a3f0-d06c17cd8118"
+                },
+                {
+                  "key": "title",
+                  "value": "php",
+                  "type": "text",
+                  "uuid": "3ccbbc9f-e245-4c96-8125-bc8a4adf20ca"
+                },
+                {
+                  "key": "description",
+                  "value": "this course is important",
+                  "type": "text",
+                  "uuid": "dceb0ca9-ade4-44ab-978b-ed6cb6accd3e"
+                },
+                {
+                  "key": "price",
+                  "value": "123",
+                  "type": "text",
+                  "uuid": "80a8b526-772f-4fe3-bc4c-267b3986d930"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses/2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses",
+                "2"
+              ]
+            },
+            "description": "Mettre à jour les informations d’un cours (réservé à l’enseignant)."
+          },
+          "response": []
+        },
+        {
+          "name": "show one course",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "teacher_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "1991124a-a261-4e57-a3f0-d06c17cd8118"
+                },
+                {
+                  "key": "title",
+                  "value": "lecteur",
+                  "type": "text",
+                  "uuid": "3ccbbc9f-e245-4c96-8125-bc8a4adf20ca"
+                },
+                {
+                  "key": "description",
+                  "value": "this course is important",
+                  "type": "text",
+                  "uuid": "dceb0ca9-ade4-44ab-978b-ed6cb6accd3e"
+                },
+                {
+                  "key": "price",
+                  "value": "123",
+                  "type": "text",
+                  "uuid": "80a8b526-772f-4fe3-bc4c-267b3986d930"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses/2",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses",
+                "2"
+              ]
+            },
+            "description": "Afficher les détails d’un cours spécifique."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "wishlist",
+      "item": [
+        {
+          "name": "add WishList",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"course_id\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/wishlist",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "wishlist"
+              ]
+            },
+            "description": "Ajouter un cours à la liste des favoris de l’étudiant."
+          },
+          "response": []
+        },
+        {
+          "name": "show WishList",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/wishlist",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "wishlist"
+              ]
+            },
+            "description": "Afficher la liste des cours sauvegardés par l’étudiant."
+          },
+          "response": []
+        },
+        {
+          "name": "delete WishListe",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/wishlist/9",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "wishlist",
+                "9"
+              ]
+            },
+            "description": "Supprimer un cours de la wishlist."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "inscription",
+      "item": [
+        {
+          "name": "payer cours",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses/2/pay",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses",
+                "2",
+                "pay"
+              ]
+            },
+            "description": "Initialise un paiement via Stripe et retourne un `client_secret`."
+          },
+          "response": []
+        },
+        {
+          "name": "confirm inscription cours",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzc0NDU1OTE1LCJleHAiOjE3NzQ0NTk1MTUsIm5iZiI6MTc3NDQ1NTkxNSwianRpIjoieDdVM29jQkJja0RHUGJkQSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.KIUEf1FMFPKOPTXjaOtwraLMjlsDYSYVz8uEkGBFD9o",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses/2/confirm",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses",
+                "2",
+                "confirm"
+              ]
+            },
+            "description": "Confirme le paiement et inscrit automatiquement l’étudiant au cours.  \nL’étudiant est aussi **assigné automatiquement à un groupe**."
+          },
+          "response": []
+        },
+        {
+          "name": "supprimer inscription",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzc0NDU1OTE1LCJleHAiOjE3NzQ0NTk1MTUsIm5iZiI6MTc3NDQ1NTkxNSwianRpIjoieDdVM29jQkJja0RHUGJkQSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.KIUEf1FMFPKOPTXjaOtwraLMjlsDYSYVz8uEkGBFD9o",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses/3/cancel",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses",
+                "3",
+                "cancel"
+              ]
+            },
+            "description": "Permet à un étudiant de se désinscrire d’un cours (statut devient _cancelled_)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "teacher",
+      "item": [
+        {
+          "name": "enroulement cours student",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzc0NDU1OTE1LCJleHAiOjE3NzQ0NTk1MTUsIm5iZiI6MTc3NDQ1NTkxNSwianRpIjoieDdVM29jQkJja0RHUGJkQSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.KIUEf1FMFPKOPTXjaOtwraLMjlsDYSYVz8uEkGBFD9o",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/teacher/courses/3/students",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "teacher",
+                "courses",
+                "3",
+                "students"
+              ]
+            },
+            "description": "Permet à un enseignant de voir la liste des étudiants inscrits à un cours spécifique."
+          },
+          "response": []
+        },
+        {
+          "name": "statistique",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzc0NDU1OTE1LCJleHAiOjE3NzQ0NTk1MTUsIm5iZiI6MTc3NDQ1NTkxNSwianRpIjoieDdVM29jQkJja0RHUGJkQSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.KIUEf1FMFPKOPTXjaOtwraLMjlsDYSYVz8uEkGBFD9o",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/teacher/stats",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "teacher",
+                "stats"
+              ]
+            },
+            "description": "Retourne des statistiques sur les cours de l’enseignant :\n\n- Nombre total d’étudiants\n    \n- Inscriptions actives\n    \n- Inscriptions annulées"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Group",
+      "item": [
+        {
+          "name": "Membre par group",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzc0NDU1OTE1LCJleHAiOjE3NzQ0NTk1MTUsIm5iZiI6MTc3NDQ1NTkxNSwianRpIjoieDdVM29jQkJja0RHUGJkQSIsInN1YiI6IjciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.KIUEf1FMFPKOPTXjaOtwraLMjlsDYSYVz8uEkGBFD9o",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/api/courses/3/groups",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "courses",
+                "3",
+                "groups"
+              ]
+            },
+            "description": "Permet à un enseignant de voir les groupes associés à un cours ainsi que les étudiants dans chaque groupe."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "show Interest",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "name",
+              "value": "maria",
+              "type": "text",
+              "uuid": "1991124a-a261-4e57-a3f0-d06c17cd8118"
+            },
+            {
+              "key": "email",
+              "value": "maria1@gmail.com",
+              "type": "text",
+              "uuid": "c5554526-b994-4618-a0b2-c551d1023f57"
+            },
+            {
+              "key": "role",
+              "value": "student",
+              "type": "text",
+              "uuid": "eb82bc0d-96bb-4d4b-9ac5-091b683e4d2e"
+            },
+            {
+              "key": "password",
+              "value": "maria 123",
+              "type": "text",
+              "uuid": "544467b1-7b4a-47a2-836d-bc74957e3048"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/interests",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "interests"
+          ]
+        },
+        "description": "Récupérer la liste des intérêts disponibles."
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/recommended-courses",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "recommended-courses"
+          ]
+        },
+        "description": "Retourne les cours recommandés pour l’étudiant en fonction de ses centres d’intérêt."
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
