@@ -1,0 +1,86 @@
+@extends('layouts.app')
+
+@section('title', 'Créer un cours')
+
+@section('content')
+<div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">Créer un cours</h1>
+
+    <form id="courseForm" class="space-y-4">
+        <div>
+            <label class="block mb-1">Titre</label>
+            <input type="text" id="title" class="w-full border rounded px-3 py-2" required>
+        </div>
+
+        <div>
+            <label class="block mb-1">Description</label>
+            <textarea id="description" class="w-full border rounded px-3 py-2" required></textarea>
+        </div>
+
+        <div>
+            <label class="block mb-1">Prix</label>
+            <input type="number" id="price" class="w-full border rounded px-3 py-2" required>
+        </div>
+
+        <div>
+            <label class="block mb-1">Intérêt</label>
+            <select id="interest_id" class="w-full border rounded px-3 py-2"></select>
+        </div>
+
+        <button class="w-full bg-green-600 text-white py-2 rounded">Créer</button>
+    </form>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    async function loadInterests() {
+        let response = await fetch('/api/interests', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        let data = await response.json();
+
+        let select = document.getElementById('interest_id');
+        select.innerHTML = `<option value="">Choisir</option>`;
+
+        data.forEach(function (interest) {
+            select.innerHTML += `<option value="${interest.id}">${interest.name}</option>`;
+        });
+    }
+
+    document.getElementById('courseForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        let response = await fetch('/api/courses', {
+            method: 'POST',
+            headers: jsonHeaders(),
+            body: JSON.stringify({
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                price: document.getElementById('price').value,
+                interest_id: document.getElementById('interest_id').value
+            })
+        });
+
+        let data = await response.json();
+
+        if (!response.ok) {
+            showMessage(data.message || data.error || data.erreur || 'Erreur création', 'error');
+            return;
+        }
+
+        showMessage('Cours créé');
+        window.location.href = "{{ route('teacher.courses.index') }}";
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        requireRole('teacher').then(function (ok) {
+            if (ok) loadInterests();
+        });
+    });
+</script>
+@endsection
