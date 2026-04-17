@@ -26,6 +26,35 @@
 
 @section('scripts')
 <script>
-    
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        let response = await fetch('/api/login', {
+            method: 'POST',
+            headers: jsonHeaders(),
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
+        let data = await response.json();
+
+        if (!response.ok) {
+            showMessage(data.erreur || 'Login failed', 'error');
+            return;
+        }
+
+        setToken(data.token);
+        setUserName(email);
+
+        let role = await detectRole();
+
+        if (role === 'teacher') {
+            window.location.href = "{{ route('dashboard') }}";
+        } else {
+            window.location.href = "{{ route('home') }}";
+        }
+    });
 </script>
 @endsection
